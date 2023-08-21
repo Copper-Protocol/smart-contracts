@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: MIT
+// SPDX-License-Identifier: COPPER-PROTOCOL
 pragma solidity ^0.8.0;
 
 import {AccessControlModifiers} from "./AccessControlModifiers.sol";

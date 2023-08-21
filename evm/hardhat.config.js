@@ -1,8 +1,13 @@
 require("@nomicfoundation/hardhat-toolbox");
+require("@matterlabs/hardhat-zksync-deploy")
+require("@matterlabs/hardhat-zksync-solc")
+require("@matterlabs/hardhat-zksync-verify")
+
 const { randomBytes } = require('crypto');
 const { utils } = require("ethers");
 const { toWei } = require("./scripts/libraries/utils");
 const { log } = require("console");
+
 
 const {
   DEPLOYER_PRIVATE_KEY,
@@ -65,7 +70,7 @@ module.exports = {
           balance: toWei(`10000000`).toString()
         }, 
      ],
-      chainId: 137,
+      chainId: 1137,
       forking: {
         url: process.env.MATIC_RPC_PROVIDERS.split(',')[0],
         // blockNumber: 21244653
@@ -114,4 +119,11 @@ module.exports = {
     },
   },
   solidity: "0.8.18",
+  etherscan: {
+    apiKey: {
+      mainnet: "E1CYUHNRN9GD33UV9C3SKA6JRGUKVV3XH8",
+      sepolia: "E1CYUHNRN9GD33UV9C3SKA6JRGUKVV3XH8",
+    },
+  },
+
 };

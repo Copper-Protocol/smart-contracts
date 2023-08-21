@@ -1,56 +1,79 @@
-// We require the Hardhat Runtime Environment explicitly here. This is optional
-// but useful for running the script in a standalone fashion through `node <script>`.
-//
-// You can also run a script with `npx hardhat run <script>`. If you do that, Hardhat
-// will compile your contracts, add the Hardhat Runtime Environment's members to the
-// global scope, and execute the script.
-const hre = require("hardhat")
-const { readFileSync, writeFileSync, existsSync, mkdir, mkdirSync } = require('fs')
+const { ethers } = require('hardhat');
+const utils = require('../libraries/utils');
+const common = require('../libraries/common');
+const { existsSync, mkdirSync, writeFileSync, readFileSync } = require('fs');
 
-const configDir = `${process.cwd()}/config/${hre.network.name}`
-if (!existsSync(configDir)) mkdirSync(configDir, {recursive: true})
+async function deployCopperToken() {
+  // Load contracts from the configuration file
+  const contracts = await common.loadContracts();
 
-const treasuryAddress = (readFileSync(`${configDir}/CopperTreasury`)).toString().trim()
-console.log({treasuryAddress})
+  const [deployer] = await ethers.getSigners();
+  // name, symbol, initialSupply, decimals, cap, minters, burners
+  // Set the initial supply, name, and symbol for the token
+  const initialSupply = ethers.utils.parseEther("1000");
+  const name = "Copper Test Token";
+  const symbol = "tCOPPER";
+  const decimals = 18;
+  const cap = ethers.utils.parseEther("1000000")
 
-const {BigNumber} = hre.ethers
-async function main() {
-  // const currentTimestampInSeconds = Math.round(Date.now() / 1000);
-  // const unlockTime = currentTimestampInSeconds + 60;
+  // Define the minters and burners addresses
+  const minters = [deployer.address];
+  const burners = [deployer.address];
 
-  // const lockedAmount = hre.ethers.utils.parseEther("0.001");
+  const networkName = await common.getNetwork();
 
-  // const Lock = await hre.ethers.getContractFactory("Lock");
-  // const lock = await Lock.deploy(unlockTime, { value: lockedAmount });
+  try {
+    // // Check if the config directory exists
+    // if (!existsSync("config")) {
+    //   mkdirSync("config");
+    //   writeFileSync("config/address.json", '{}');
+    // }
 
-  // await lock.deployed();
+    // // Check if the config file exists
+    // if (!existsSync("config/address.json")) {
+    //   throw new Error("Config file does not exist");
+    // }
 
-  // console.log(
-  //   `Lock with ${ethers.utils.formatEther(
-  //     lockedAmount
-  //   )}ETH and unlock timestamp ${unlockTime} deployed to ${lock.address}`
-  // );
-  // constructor (uint256 initialSupply, uint256 max, string memory name, string memory symbol, address[] memory minters, address[] memory burners, address treasury) 
-  const treasury = treasuryAddress
-  const max = ethers.utils.parseEther(`1000000000`)
-  const initialSupply = ethers.utils.parseEther(`1000000000` )
-  const name = `FraktalDeFi`
-  const symbol = `FRAKTAL`
-  const minters = [treasury]
-  const burners = [treasury]
+    // Check if the contract has already been deployed on the network
+    const copperTokenAddress = await common.isContractDeployed('CopperToken', networkName);
 
-  console.log({initialSupply, max, name, symbol, minters, burners, treasury})
-  const FraktalDeFiToken = await hre.ethers.getContractFactory("FraktalDeFiToken")
-  const fraktalDeFiToken = await FraktalDeFiToken.deploy(initialSupply, max, name, symbol, minters, burners, treasury)
-  await fraktalDeFiToken.deployed()
-  console.log(`FraktalDeFi Token (FRAKTAL) deployed @ ${await fraktalDeFiToken.address}`)
+    if (copperTokenAddress) {
+      console.log("CopperToken has already been deployed on", networkName);
+      console.log("Contract address:", copperTokenAddress);
+      return { address: copperTokenAddress, name, symbol, initialSupply, decimals, cap, minters, burners };
+    }
 
-  writeFileSync(`${configDir}/FraktalDeFiToken`, fraktalDeFiToken.address)
+    // Deploy the CopperToken contract
+    const CopperToken = await ethers.getContractFactory("CopperToken")
+    const copperToken = await CopperToken.deploy(name, symbol, initialSupply, decimals, cap, minters, burners)
+    await copperToken.deployed()
+
+    // Save contract address for future reference
+    common.addContract('CopperToken', copperToken.address); // Use the common module function
+
+    console.log("CopperToken deployed at:", copperToken.address);
+    return { address: copperToken.address, name, symbol, initialSupply, decimals, cap, minters, burners };
+  } catch (error) {
+    console.error("Error:", error.message)
+  }
 }
 
-// We recommend this pattern to be able to use async/await everywhere
-// and properly handle errors.
-main().catch((error) => {
-  console.error(error);
-  process.exitCode = 1;
-});
+deployCopperToken()
+  .then(async ({ address, name, symbol, initialSupply, decimals, cap, minters, burners }) => {
+    console.log(`Verifying Copper Token...`, {
+      address, name, symbol, initialSupply, decimals, cap, minters, burners
+    })
+    await hre.run("verify:verify", {
+      address,
+      constructorArguments: [
+        name, symbol, initialSupply, decimals, cap, minters, burners
+      ],
+    });
+
+
+  })
+  .then(() => process.exit(0))
+  .catch((error) => {
+    console.error("Error:", error.message)
+    process.exit(1)
+  });

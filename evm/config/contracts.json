@@ -1,0 +1,26 @@
+{
+  "addresses": {
+    "goerli": {
+      "DiamondInit": "0x0c0Ff45Fb206e609248f1214E3531DdD902fCC80",
+      "Diamond": "0x187ead2B80f486936D13115d1B8246907ccd2B6c",
+      "DiamondCutFacet": "0x5CB263Dff4F49007c0dAD3D19d260C8803e2cEd0",
+      "FacetDiamondLoupeFacet": "0xBBec282B5B0a5357700a738B07dbeC08924ddF76",
+      "FacetOwnershipFacet": "0xCE351B9560E48dD02b1E7819192b856af922fc22",
+      "FacetCopperTrust": "0x718B5f6A40583fcC967b98568c008630531436A8"
+    },
+    "sepolia": {
+      "DiamondCutFacet": "0x1192fb595DdcabdE0A45A9A7D235A0a3F604B549",
+      "Diamond": "0xaacEDE296E7Cf25883181755C1f39322C38F9442",
+      "DiamondInit": "0x312a442E05727cdb0EB86d9FEE097a50BC14ecd4",
+      "FacetDiamondLoupeFacet": "0x00ca4Ad7F8E6A9cD5CDb20d4da0CC796a7788022",
+      "FacetOwnershipFacet": "0xE2f5e42C2EFd36d9f7e8BB8af88d594D1B1F25E5",
+      "FacetCopperTrust": "0x372b8E841e62Ab5852521420847929cc752dDB83",
+      "CopperToken": "0xEE140490A04c7278948323b82797fDcdA5A53BeF",
+      "CopperAirdrop": "0x9a12881749509aa13c20f5afABE7aCfDE810Fac3",
+      "CopperFaucet": "0x4fc9f74B25dDa91cAB32bC36AE4FB18a7A62E597"
+    },
+    "unknown": {
+      "CopperToken": "0x7Ce8FAeebB4860ad95aDdf82D1018128bFE61519"
+    }
+  }
+}

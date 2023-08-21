@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: MIT
+// SPDX-License-Identifier: COPPER-PROTOCOL
 pragma solidity ^0.8.0;
 
 import {LibMeta} from "../../../libraries/LibMeta.sol";
@@ -10,15 +10,15 @@ contract AccessControlInternal {
     using LibAccessControl for address;
 
     function _setRoleAdmin(bytes32 roleId, bytes32 adminRoleId) internal {
-        LibAccessControl._setRoleAdmin(roleId, adminRoleId);
+        LibAccessControl.setRoleAdmin(roleId, adminRoleId);
     }
 
     function _grantRole(bytes32 roleId, address account) internal {
-        LibAccessControl._grantRole(roleId, account);
+        LibAccessControl.grantRole(roleId, account);
     }
 
     function _revokeRole(bytes32 roleId, address account) internal {
-        LibAccessControl._revokeRole(roleId, account);
+        LibAccessControl.revokeRole(roleId, account);
     }
 
     function _checkRole(bytes32 roleId, address account) internal view {
@@ -47,5 +47,9 @@ contract AccessControlInternal {
     function _checkRoleVerified(bytes32 roleId, address account) internal view {
         require(account != address(0), "AccessControl: account cannot be zero address");
         _checkRole(roleId, account);
+    }
+    function _hasRole(bytes32 roleId, address account) internal view returns(bool _has) {
+        require(account != address(0), "AccessControl: account cannot be zero address");
+        _has = LibAccessControl.hasRole(roleId, account);
     }
 }
