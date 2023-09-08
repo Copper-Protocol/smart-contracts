@@ -9,7 +9,7 @@ import { ERC20BaseInternal } from "../shared/facets/ERC20/ERC20BaseInternal.sol"
 import { ERC20CappedInternal } from "../shared/facets/ERC20/extension/ERC20CappedInternal.sol";
 
 contract CopperToken is ERC20Base, ERC20MintBurn, ERC20Meta, ERC20Capped {
-    constructor(
+    function initialize(
         string memory name,
         string memory symbol,
         uint256 initialSupply,
@@ -17,7 +17,7 @@ contract CopperToken is ERC20Base, ERC20MintBurn, ERC20Meta, ERC20Capped {
         uint256 cap,
         address[] memory minters,
         address[] memory burners
-    ) {
+    ) external notInitialized {
         _initialize(initialSupply, decimals);
         _initERC20Meta(name, symbol);
         _initERC20Capped(cap);

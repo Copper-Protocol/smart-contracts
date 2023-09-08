@@ -19,8 +19,25 @@
       "CopperAirdrop": "0x9a12881749509aa13c20f5afABE7aCfDE810Fac3",
       "CopperFaucet": "0x4fc9f74B25dDa91cAB32bC36AE4FB18a7A62E597"
     },
+    "matic": {
+      "DiamondCutFacet": "0xDee1099C2ffDb6511ffade23dd45D98E4B06EE83",
+      "Diamond": "0xB248B5C63eD83865c0DaF7Ab05487335B0BdbA42",
+      "DiamondInit": "0xed7a5e4B2534802395eeCaF96df594BbBf638e73",
+      "FacetDiamondLoupeFacet": "0x5a6FF3439324A5519D36FD99187f1a1858A89E3B",
+      "FacetOwnershipFacet": "0x08e49039bB21E6f96e502E9322A4881C18F33dbc",
+      "FacetCopperTrust": "0x18EBaDb0b28D75fAF76DC8D344904AC07308b207",
+      "CopperToken": "0xB5614C6FB5BE10E4EB001253E51eB74317848f36",
+      "CopperAirdrop": "0xfeCdD850E17167C067DA2750F84665319085859a"
+    },
     "unknown": {
-      "CopperToken": "0x7Ce8FAeebB4860ad95aDdf82D1018128bFE61519"
+      "DiamondCutFacet": "0x44Ba9EB83C5062c6Ca1cFBFeF19E82628496f875",
+      "Diamond": "0x1b03BDAF5096d28D0DbF4586F68641F502318b33",
+      "DiamondInit": "0x3067a83F0FBa81AEB480B02BCCa072b45AaF5bB7",
+      "FacetDiamondLoupeFacet": "0x7dFf46A7b18470d0621843BEa5d2fA28F6F0D979",
+      "FacetOwnershipFacet": "0x053969Ca32343721B5D902180a2689d7Cf1c5d18",
+      "FacetCopperTrust": "0x7de132867466AFACF5FB7a689A2f4e0393775d79",
+      "CopperToken": "0xDab8C6A98f6514C0b9B641107Fe31C02FE00D9Da",
+      "CopperAirdrop": "0x0DD2dA02304792Ab3275e7d800a7Bf75aAf152Dc"
     }
   }
 }

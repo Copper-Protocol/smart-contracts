@@ -6,7 +6,7 @@ import { LibMeta } from "../../../libraries/LibMeta.sol";
 
 
 contract ERC20MintBurn is ERC20MintBurnInternal {
-    function initializeERC20MintBurn(address[] memory minters_, address[] memory burners_) internal notERC20MintBurnInitialized {
+    function initializeERC20MintBurn(address[] memory minters_, address[] memory burners_) external notERC20MintBurnInitialized {
         _initializeERC20MintBurn(minters_, burners_);
     }
 

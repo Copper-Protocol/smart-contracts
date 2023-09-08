@@ -2,29 +2,30 @@
 pragma solidity ^0.8.0;
 
 import "../CopperToken/CopperToken.sol";
+import "../shared/libraries/LibMeta.sol";
 
 contract CopperAirdrop {
     address public owner;
     CopperToken public copperToken;
 
-    uint256 public airdropAmount = 500;
+    uint256 public airdropAmount = 500 * 10 ** 18;
     mapping(address => bool) public hasClaimed;
 
     constructor(address _copperTokenAddress) {
-        owner = msg.sender;
+        owner = LibMeta.msgSender();
         copperToken = CopperToken(_copperTokenAddress);
     }
 
     modifier onlyOwner() {
-        require(msg.sender == owner, "Only the contract owner can perform this action");
+        require(LibMeta.msgSender() == owner, "Only the contract owner can perform this action");
         _;
     }
 
     function claimAirdrop() external {
-        require(!hasClaimed[msg.sender], "You have already claimed the airdrop");
+        require(!hasClaimed[LibMeta.msgSender()], "You have already claimed the airdrop");
         
-        hasClaimed[msg.sender] = true;
-        copperToken.mint(msg.sender, airdropAmount);
+        hasClaimed[LibMeta.msgSender()] = true;
+        copperToken.mint(LibMeta.msgSender(), airdropAmount);
     }
 
     // Function to airdrop tokens to a list of recipients

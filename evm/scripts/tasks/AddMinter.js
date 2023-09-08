@@ -15,10 +15,9 @@ async function main() {
 
   // Deploy the CopperToken contract
   const copperToken = await ethers.getContractAt("CopperToken", copperTokenAddress);
-
-
+  console.log({contracts: contracts.addresses[networkName]})
   console.log("CopperToken deployed to:", copperToken.address);
-
+  console.log({copperTokenAddress, copperAirdropAddress })
   // Deploy the CopperAirdrop contract
   const copperAirdrop = await ethers.getContractAt("CopperAirdrop", copperAirdropAddress);
 

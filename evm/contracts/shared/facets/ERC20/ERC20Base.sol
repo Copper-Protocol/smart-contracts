@@ -14,10 +14,10 @@ import {ERC20BaseInternal} from "./ERC20BaseInternal.sol";
 // ERC20 token contract with internal functions
 contract ERC20Base is ERC20BaseModifiers, ERC20BaseInternal {
     // Initialize the ERC20 token
-    function initialize(
+    function initializeBase (
         uint256 totalSupply_,
         uint256 decimals_
-    ) external notInitialized {
+    ) external notInitialized virtual {
         _initialize(
             totalSupply_,
             decimals_

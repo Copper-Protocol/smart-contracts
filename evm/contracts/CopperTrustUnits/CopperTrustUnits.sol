@@ -30,5 +30,7 @@ contract CopperTrustUnits is ERC20Base, ERC20MintBurn, ERC20Meta, ERC20Capped {
     function transfer (address to, uint256 value) external virtual override(ERC20Base, ERC20Capped) returns (bool) {
         return ERC20Capped(address(this)).transfer(to, value);
     }
-
+    function version () external pure returns (string memory) {
+        return '0.0.1';
+    }
 }

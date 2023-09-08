@@ -10,10 +10,10 @@ contract ERC20Meta is ERC20MetaInternal {
    ) internal {
     _initERC20Meta(name_, symbol_);
   }
-  function name () internal view returns (string memory name_) {
+  function name () external view returns (string memory name_) {
     name_ = _name();
   }
-  function symbol () internal view returns (string memory symbol_) {
+  function symbol () external view returns (string memory symbol_) {
     symbol_ = _symbol();
   }
 }

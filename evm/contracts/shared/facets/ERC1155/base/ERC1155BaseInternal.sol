@@ -86,4 +86,89 @@ contract ERC1155BaseInternal {
 
         emit URI(__uri, _id);
     }
+    function _mint(
+        address _to,
+        uint256 _id,
+        uint256 _value,
+        bytes memory _data
+    ) internal {
+        require(_to != address(0), "Invalid recipient address");
+        require(_id > 0, "Invalid token ID");
+
+        _baseStore().balances[_to][_id] += _value;
+
+        emit TransferSingle(msg.sender, address(0), _to, _id, _value);
+
+        // if (_to.isContract()) {
+        //     _doSafeTransferAcceptanceCheck(msg.sender, msg.sender, _to, _id, _value, _data);
+        // }
+    }
+
+    function _burn(
+        address _from,
+        uint256 _id,
+        uint256 _value
+    ) internal {
+        require(_from != address(0), "Invalid sender address");
+        require(_id > 0, "Invalid token ID");
+        require(_baseStore().balances[_from][_id] >= _value, "Insufficient balance");
+
+        _baseStore().balances[_from][_id] -= _value;
+
+        emit TransferSingle(msg.sender, _from, address(0), _id, _value);
+    }
+    /**
+     * @dev Internal function to check if a recipient contract supports the ERC-1155 interface and handle safe transfers.
+     *
+     * @param _operator Address which initiated the transfer.
+     * @param _from Address which previously owned the token.
+     * @param _to Address which will receive the token.
+     * @param _id ID of the token to transfer.
+     * @param _value Amount of tokens to transfer.
+     * @param _data Data to send along with the call if the recipient is a contract.
+     *
+     * @return `true` if the recipient accepts the transfer, `false` otherwise.
+     */
+    function _doSafeTransferAcceptanceCheck(
+        address _operator,
+        address _from,
+        address _to,
+        uint256 _id,
+        uint256 _value,
+        bytes memory _data
+    ) internal returns (bool) {
+        // Check if the recipient `_to` is a contract.
+        // if (!_to.isContract()) {
+        //     return true; // No need for acceptance check for non-contract recipients.
+        // }
+
+        // Attempt to call the `onERC1155Received` function on the recipient contract.
+        // If it's not implemented, the call will revert, indicating refusal.
+        (bool success, bytes memory data) = _to.call(
+            abi.encodeWithSelector(
+                bytes4(keccak256("onERC1155Received(address,address,uint256,uint256,bytes)")),
+                _operator,
+                _from,
+                _id,
+                _value,
+                _data
+            )
+        );
+
+        if (!success) {
+            if (data.length > 0) {
+                // Revert with the returned data from the call.
+                assembly {
+                    let data_size := mload(data)
+                    revert(add(32, data), data_size)
+                }
+            } else {
+                revert("Transfer to non-ERC1155Receiver contract"); // Revert with a generic message.
+            }
+        }
+
+        // Check the returned data to determine acceptance.
+        return (data.length > 0 && abi.decode(data, (bool)));
+    }
+
 }

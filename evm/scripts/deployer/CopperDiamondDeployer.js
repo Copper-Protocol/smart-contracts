@@ -13,6 +13,10 @@ const {
 const {log} = require('console')
 
 let diamond, diamondCutFacet, diamondInit, diamondCut, network, contracts
+const wrappedTokens = {
+  matic: `0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270`,
+  unknown: `0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270`,
+}
 
 exports.deployDiamond = async function deployDiamond() {
   // await loadContracts()
@@ -68,6 +72,7 @@ exports.deployDiamond = async function deployDiamond() {
   }
 
   if (!isContractDeployed('DiamondInit', network)) {
+    console.log(`Initializing Diamond...`)
       // deploy DiamondInit
     // DiamondInit provides a function that is called when the diamond is upgraded to initialize state variables
     // Read about how the diamondCut function works here: https://eips.ethereum.org/EIPS/eip-2535#addingreplacingremoving-functions
@@ -126,7 +131,7 @@ exports.deployDiamond = async function deployDiamond() {
   let tx;
   let receipt;
   // call to init function
-  let functionCall = diamondInit.interface.encodeFunctionData('init', [`0xb16F35c0Ae2912430DAc15764477E179D9B9EbEa`]);
+  let functionCall = diamondInit.interface.encodeFunctionData('init', [wrappedTokens[network]]);
   log({functionCall})
   tx = await diamondCut.diamondCut(cut, diamondInit.address, functionCall);
   log('Diamond cut tx:', tx.hash);

@@ -68,7 +68,7 @@ module.exports = {
         {
           privateKey: pkTest07, 
           balance: toWei(`10000000`).toString()
-        }, 
+        },
      ],
       chainId: 1137,
       forking: {
@@ -82,6 +82,18 @@ module.exports = {
       },  
       saveDeployments: true,
       tags: ["local"],
+
+    },
+    localhost: {
+      url: `http://localhost:8545`,
+      accounts: [
+          DEPLOYER_PRIVATE_KEY,
+          PRIVATE_KEY,
+          BOT_MANAGER_PRIVATE_KEY,
+          BOT_RUNNER_PRIVATE_KEY,
+              
+      ],
+      chainId: 1137
     },
     goerli: {
       url: process.env.GOERLI_RPC_PROVIDERS.split(',')[0],
@@ -117,13 +129,33 @@ module.exports = {
       ethNetwork: "goerli", // Can also be the RPC URL of the Ethereum network (e.g. `https://goerli.infura.io/v3/<API_KEY>`)
       zksync: true,
     },
+    matic: {
+      url: process.env.MATIC_RPC_PROVIDERS.split(',')[0],
+      accounts: [
+        DEPLOYER_PRIVATE_KEY,
+        PRIVATE_KEY,
+        BOT_MANAGER_PRIVATE_KEY,
+        BOT_RUNNER_PRIVATE_KEY,
+            
+    ],  
+    }
   },
   solidity: "0.8.18",
   etherscan: {
     apiKey: {
-      mainnet: "E1CYUHNRN9GD33UV9C3SKA6JRGUKVV3XH8",
-      sepolia: "E1CYUHNRN9GD33UV9C3SKA6JRGUKVV3XH8",
+      mainnet: process.env.ETHERSCAN_API_KEY,
+      sepolia: process.env.ETHERSCAN_API_KEY,
+      polygon: process.env.POLYGONSCAN_API_KEY
     },
   },
-
+  customChains: [
+    {
+      network: "localhost",
+      chainId: 1137,
+      urls: {
+        apiURL: "http://localhost:8545",
+        // browserURL: "https://goerli.etherscan.io"
+      }
+    }
+  ]
 };
